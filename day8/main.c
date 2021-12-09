@@ -4,14 +4,13 @@
 #include <math.h>
 #include <string.h>
 
-
 void readinput(FILE *fp);
 
 void mapsignals(int i, int *signals);
 
-int contains(char* s1, char* s2);
+int contains(char *s1, char *s2);
 
-int contains2(char* s1, char* s2);
+int contains2(char *s1, char *s2);
 
 int getnumber(int i, int *signals);
 
@@ -58,7 +57,8 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int getnumber(int i, int *signals){
+int getnumber(int i, int *signals)
+{
     int numbers[4];
     for (int k = 0; k < 4; k++)
     {
@@ -69,54 +69,54 @@ int getnumber(int i, int *signals){
                 numbers[k] = signals[j];
                 break;
             }
-            
         }
     }
     return 1000 * numbers[0] + 100 * numbers[1] + 10 * numbers[2] + numbers[3];
 }
 
 void mapsignals(int i, int *signals)
-{   
+{
     int signalsindex[10];
     int seg5[3];
     int seg5isum = 0;
     int seg6[3];
     int seg6isum = 0;
-    int c5,c6;
+    int c5, c6;
     c5 = c6 = 0;
     for (int j = 0; j < 10; j++)
     {
         switch (strlen(input[i][j]))
-            {
-            case 5:
-                seg5[c5] = j;
-                seg5isum += j;
-                c5++;
-                break;
-            case 6:
-                seg6[c6] = j;
-                seg6isum += j;
-                c6++;
-                break;
-            case 2:
-                signalsindex[1] = j;
-                break;
-            case 3:
-                signalsindex[7] = j;
-                break;
-            case 4:
-                signalsindex[4] = j;
-                break;
-            case 7:
-                signalsindex[8] = j;
-                break;
-            }
+        {
+        case 5:
+            seg5[c5] = j;
+            seg5isum += j;
+            c5++;
+            break;
+        case 6:
+            seg6[c6] = j;
+            seg6isum += j;
+            c6++;
+            break;
+        case 2:
+            signalsindex[1] = j;
+            break;
+        case 3:
+            signalsindex[7] = j;
+            break;
+        case 4:
+            signalsindex[4] = j;
+            break;
+        case 7:
+            signalsindex[8] = j;
+            break;
+        }
     }
     //time to match to get the other numbers
     //start by finding 3 which is part of 5 segment subset with 2 and 5 and 3 is the only one which covers 1
     for (int j = 0; j < 3; j++)
-    {   
-        if (contains(input[i][seg5[j]], input[i][signalsindex[1]])){
+    {
+        if (contains(input[i][seg5[j]], input[i][signalsindex[1]]))
+        {
             signalsindex[3] = seg5[j];
             seg5isum -= seg5[j];
             break;
@@ -125,7 +125,8 @@ void mapsignals(int i, int *signals)
     // 6 is the only number in seg6 which does not cover 1
     for (int j = 0; j < 3; j++)
     {
-        if (!contains(input[i][seg6[j]], input[i][signalsindex[1]])){
+        if (!contains(input[i][seg6[j]], input[i][signalsindex[1]]))
+        {
             signalsindex[6] = seg6[j];
             seg6isum -= seg6[j];
         }
@@ -133,7 +134,8 @@ void mapsignals(int i, int *signals)
     // 9 is the only number in seg6 that covers both 1 and 4
     for (int j = 0; j < 3; j++)
     {
-        if (contains(input[i][seg6[j]], input[i][signalsindex[1]]) && contains(input[i][seg6[j]], input[i][signalsindex[4]])){
+        if (contains(input[i][seg6[j]], input[i][signalsindex[1]]) && contains(input[i][seg6[j]], input[i][signalsindex[4]]))
+        {
             signalsindex[9] = seg6[j];
             seg6isum -= seg6[j];
         }
@@ -141,7 +143,8 @@ void mapsignals(int i, int *signals)
     // 5 is included in 9 and does not include 1
     for (int j = 0; j < 3; j++)
     {
-        if (!contains(input[i][seg5[j]], input[i][signalsindex[1]]) && contains(input[i][signalsindex[9]], input[i][seg5[j]])){
+        if (!contains(input[i][seg5[j]], input[i][signalsindex[1]]) && contains(input[i][signalsindex[9]], input[i][seg5[j]]))
+        {
             signalsindex[5] = seg5[j];
             seg5isum -= seg5[j];
         }
@@ -151,50 +154,58 @@ void mapsignals(int i, int *signals)
     signalsindex[2] = seg5isum;
     for (int j = 0; j < 10; j++)
     {
-        signals[signalsindex[j]] = j; 
+        signals[signalsindex[j]] = j;
     }
-    
 }
 
-int contains2(char* s1, char* s2) {
-    if (strlen(s1) != strlen(s2)) return 0;
+int contains2(char *s1, char *s2)
+{
+    if (strlen(s1) != strlen(s2))
+        return 0;
     int i = 0;
     for (int j = 0; j < strlen(s2); j++)
     {
-        if (strchr(s1, s2[j]) != NULL) i++;
+        if (strchr(s1, s2[j]) != NULL)
+            i++;
     }
     return i == strlen(s2);
 }
 
-int contains(char* s1, char* s2) {
+int contains(char *s1, char *s2)
+{
     for (int i = 0; i < strlen(s2); i++)
     {
-        if (strchr(s1, s2[i]) == NULL) return 0;
+        if (strchr(s1, s2[i]) == NULL)
+            return 0;
     }
     return 1;
 }
 
-void readinput(FILE *fp) {
+void readinput(FILE *fp)
+{
     int c;
-    for (int i = 0; i < inputsize; i++) {
+    for (int i = 0; i < inputsize; i++)
+    {
         for (int j = 0; j < 10; j++)
         {
             c = fgetc(fp);
             int index = 0;
-            while (c != ' ') {
+            while (c != ' ')
+            {
                 input[i][j][index] = c;
                 c = fgetc(fp);
                 index++;
             }
         }
-        
-        c = fgetc(fp);  // '|'
-        c = fgetc(fp);  // ' '
+
+        c = fgetc(fp); // '|'
+        c = fgetc(fp); // ' '
         for (int j = 0; j < 4; j++)
-        {   
+        {
             c = fgetc(fp);
             int index = 0;
-            while (c != ' ' && c != '\n' && c != EOF) {
+            while (c != ' ' && c != '\n' && c != EOF)
+            {
                 output[i][j][index] = c;
                 c = fgetc(fp);
                 index++;
@@ -202,4 +213,3 @@ void readinput(FILE *fp) {
         }
     }
 }
-
