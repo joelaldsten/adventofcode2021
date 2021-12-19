@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define folds  2
-#define nbrpoints  18
+#define folds  12
+#define nbrpoints  722
 
 typedef struct node {
     int x,y;
     struct node* next;
 } node_t;
 
-int paper[20][20];
+int paper[1500][1500];
 
 int foldvalue[folds];
 
@@ -80,11 +80,11 @@ void foldleft(int line, node_t **head) {
         if(x > line) {                                  //point yo be folded
             int delta = x - line;
             paper[x][y] = 0;
-            if(paper[line - delta][y] == 1) remove_node(head, x, y);
-            else {
+            if(paper[line - delta][y] != 1) {
                 insert(head, line - delta, y);
                 paper[line - delta][y] = 1;
             }
+            remove_node(head, x, y);
         }
         node = node->next;
     }
@@ -99,7 +99,6 @@ void foldup(int line, node_t **head) {
             int delta = y - line;
             paper[x][y] = 0;
             if(paper[x][line - delta] != 1) {
-                printf("problem haha\n");
                 insert(head, x, line - delta);
                 paper[x][line - delta] = 1;
             }
@@ -110,9 +109,9 @@ void foldup(int line, node_t **head) {
 }
 
 void printpaper(void) {
-    for (int i = 0; i < 14; i++)
+    for (int i = 0; i < 10; i++)
     {
-       for (int j = 0; j < 14; j++)
+       for (int j = 0; j < 45; j++)
        {
            printf("%d ", paper[j][i]);
        }
@@ -135,30 +134,31 @@ int main(int argc, char *argv[]) {
     }
     printlist(head);
     node_t **test = &head;
-    remove_node(test, 2,14);
-    remove_node(test, 1,10);
-    remove_node(test, 10, 12);
+    //remove_node(test, 2,14);
+    //remove_node(test, 1,10);
+    //remove_node(test, 10, 12);
     //remove_node(test, 0, 13);
-    remove_node(test, 6, 12);
-    remove_node(test, 4, 11);
-    remove_node(test, 9, 10);
-    /*remove_node(test, 0, 14);
-    remove_node(test, 0, 13);*/
-    remove_node(test, 6, 10);
-    printf("\n");
-    for (int i = 0; i < 1; i++)
+    //remove_node(test, 6, 12);
+    //remove_node(test, 4, 11);
+    //remove_node(test, 9, 10);
+    //remove_node(test, 0, 14);
+    //remove_node(test, 0, 13);
+    //remove_node(test, 6, 10);
+    //printf("\n");
+    for (int i = 0; i < folds; i++)
     {
         if(foldtype[i] == 'x') foldleft(foldvalue[i], &head);
         else foldup(foldvalue[i], &head);
     }
     node_t *node1 = head;
     int pointsleft = 0;
-    printlist(head);
+    //printlist(head);
     while (node1 != NULL) {
         pointsleft++;
         node1 = node1->next;
     }
-    printf("points left %d\n", pointsleft);
+    printf("\npoints left %d\n", pointsleft);
+    printpaper();
     fclose(fp);
     return 0;
 }
